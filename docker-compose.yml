@@ -27,4 +27,4 @@ services:
       - 8089
     volumes:
       - so1-var:/opt/splunk/var
-	    - so1-etc:/opt/splunk/etc
+      - so1-etc:/opt/splunk/etc
