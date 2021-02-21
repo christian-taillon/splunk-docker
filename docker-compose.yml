@@ -8,6 +8,8 @@ networks:
 volumes:
   so1-var:
   so1-etc:
+  so1-usr:
+  so1-sysloc:
 
 services:
   so1:
@@ -15,16 +17,39 @@ services:
       splunknet:
         aliases:
           - so1
-    image: <NEXT_VERSION_SPLUNK_IMAGE>
+    image: splunk/splunk:latest 
     container_name: so1
     environment:
       - SPLUNK_START_ARGS=--accept-license
       - SPLUNK_PASSWORD=${password}
       - DEBUG=true
       - SPLUNK_UPGRADE=true
+      - SPLUNK_LICENSE_URI=/tmp/license/splunk.lic
     ports:
-      - 8000
-      - 8089
+      - 8000:8000
+      - 8089:8089
+      - 9997:9997
+      - 8080:8080
+      - 443:443
     volumes:
       - so1-var:/opt/splunk/var
       - so1-etc:/opt/splunk/etc
+      - so1-usr:/opt/splunk/etc/users
+      - so1-sysloc:/opt/splunk/etc/system/local
+      - ./splunk.lic:/tmp/license/splunk.lic
+
+  uf1:
+    networks:
+      splunknet:
+        aliases:
+          - uf1
+    image: ${UF_IMAGE:-splunk/universalforwarder:latest}
+    hostname: uf1
+    container_name: uf1
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_STANDALONE_URL=so1
+      - SPLUNK_ADD=udp 1514,monitor /var/log/*
+      - SPLUNK_PASSWORD=${password}
+    ports:
+      - 8089
