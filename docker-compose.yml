@@ -19,7 +19,7 @@ services:
     container_name: so1
     environment:
       - SPLUNK_START_ARGS=--accept-license
-      - SPLUNK_PASSWORD=${splunk_passwd}
+      - SPLUNK_PASSWORD=${password}
       - DEBUG=true
       - SPLUNK_UPGRADE=true
     ports:
