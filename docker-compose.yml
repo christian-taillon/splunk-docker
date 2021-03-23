@@ -30,7 +30,7 @@ services:
       - 8089:8089
       - 9997:9997
       - 8080:8080
-      - 443:443
+      - 8088:8088
     volumes:
       - so1-var:/opt/splunk/var
       - so1-etc:/opt/splunk/etc
