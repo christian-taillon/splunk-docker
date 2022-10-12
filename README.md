@@ -1,8 +1,8 @@
 # splunk-docker
 
 
-## [Project Wiki](../../wiki)
-For instructions on how to deploy in Podman, Docker, or Protainer
+## [Instructions for Deployment in GitHub Wiki](../../wiki)
+For instructions on how to deploy in Podman, Docker, or Protainer, visit the GitHub Wiki [Git Wiki](../../wiki).
 
 -------------------
 
