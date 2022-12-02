@@ -1,8 +1,14 @@
+---
+layout: page
+title: "Splunk Docker"
+permalink: /splunkdocker
+---
+
 # splunk-docker
 
 
-## [Instructions for Deployment in GitHub Wiki](../../wiki)
-For instructions on how to deploy in Podman, Docker, or Protainer, visit the GitHub Wiki [Git Wiki](../../wiki).
+## [Project Wiki](../../wiki)
+For instructions on how to deploy in Podman, Docker, or Protainer
 
 -------------------
 
