@@ -23,7 +23,7 @@ Refresh this repository to a fresh standalone-only Splunk deployment, validate i
 - [x] P4 Commit and push repo changes without `.env`.
   Acceptance: intended tracked files are committed with a clear message, `.env` is not staged, and the branch is pushed to its configured remote.
   Validation: `git status --short`; `git commit`; `git push`
-  Evidence: `git status --short --branch` stayed clean after staging only tracked repo files, leaving `.env` ignored and unstaged; created commit `5dafba7` with message `Update standalone Splunk startup`; next action is to push the branch to `origin/main`.
+  Evidence: `git status --short --branch` stayed clean after staging only tracked repo files, leaving `.env` ignored and unstaged; created commit `5dafba7` with message `Update standalone Splunk startup`, then commit `2728d7b` with message `Document standalone validation evidence`; final push evidence recorded after `git push origin main`.
 
 ## Decisions
 - Keep the setup minimal: one standalone Splunk service and no bundled forwarder service.
@@ -36,5 +36,5 @@ Refresh this repository to a fresh standalone-only Splunk deployment, validate i
 - Push can still fail because of remote auth, branch protection, or connectivity.
 
 STATUS: SUCCESS
-NEXT_ACTION: Push the committed branch to `origin/main` and report the remote result.
-EVIDENCE: Updated files: `docker-compose.yml`, `.env`, `.gitignore`, `README.md`, `PLAN.md`; validation passed for compose config, fresh startup, healthy runtime, logs, and HTTP response on port 8000; commit created: `5dafba7` on branch `main`.
+NEXT_ACTION: None.
+EVIDENCE: Updated files: `docker-compose.yml`, `.env`, `.gitignore`, `README.md`, `PLAN.md`; validation passed for compose config, fresh startup, healthy runtime, logs, and HTTP response on port 8000; commits created on `main`: `5dafba7` (`Update standalone Splunk startup`) and `2728d7b` (`Document standalone validation evidence`); `.env` remained ignored and unstaged throughout.
