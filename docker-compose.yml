@@ -1,10 +1,3 @@
-version: "3.6"
-
-networks:
-  splunknet:
-    driver: bridge
-    attachable: true
-
 volumes:
   so1-var:
   so1-etc:
@@ -13,43 +6,22 @@ volumes:
 
 services:
   so1:
-    networks:
-      splunknet:
-        aliases:
-          - so1
-    image: splunk/splunk:latest 
+    image: docker.io/splunk/splunk:10.2.1-rhel9
     container_name: so1
+    hostname: so1
+    restart: unless-stopped
     environment:
-      - SPLUNK_START_ARGS=--accept-license
-      - SPLUNK_PASSWORD=${password}
-      - DEBUG=true
-      - SPLUNK_UPGRADE=true
-      - SPLUNK_LICENSE_URI=/tmp/license/splunk.lic
+      SPLUNK_START_ARGS: --accept-license
+      SPLUNK_GENERAL_TERMS: ${SPLUNK_GENERAL_TERMS}
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
+      SPLUNK_LICENSE_URI: ${SPLUNK_LICENSE_URI:-Free}
     ports:
-      - 8000:8000
-      - 8089:8089
-      - 9997:9997
-      - 8080:8080
-      - 8088:8088
+      - "0.0.0.0:8000:8000"
+      - "0.0.0.0:8088:8088"
+      - "0.0.0.0:8089:8089"
+      - "0.0.0.0:9997:9997"
     volumes:
       - so1-var:/opt/splunk/var
       - so1-etc:/opt/splunk/etc
       - so1-usr:/opt/splunk/etc/users
       - so1-sysloc:/opt/splunk/etc/system/local
-      - ./splunk.lic:/tmp/license/splunk.lic
-
-  uf1:
-    networks:
-      splunknet:
-        aliases:
-          - uf1
-    image: ${UF_IMAGE:-splunk/universalforwarder:latest}
-    hostname: uf1
-    container_name: uf1
-    environment:
-      - SPLUNK_START_ARGS=--accept-license
-      - SPLUNK_STANDALONE_URL=so1
-      - SPLUNK_ADD=udp 1514,monitor /var/log/*
-      - SPLUNK_PASSWORD=${password}
-    ports:
-      - 8089

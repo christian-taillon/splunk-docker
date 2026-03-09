@@ -1,33 +1,57 @@
----
-layout: page
-title: "Splunk Docker"
-permalink: /splunkdocker
----
-
 # splunk-docker
 
+Minimal standalone-only Splunk Enterprise compose setup for local evaluation on a workstation or LAN.
 
-## [Project Wiki](../../wiki)
-For instructions on how to deploy in Podman, Docker, or Protainer
+## Quick start
 
--------------------
+1. Keep the generated local `.env` file in place.
+2. Start Splunk:
 
-## Tests
-### Podman
-Use of docker's docker-compose for podman is only supported in podman version 3.0.0-dev and above. It is the preferred method for containerizing Splunk. Use run-podman.sh script for deployment with podman.
+```sh
+docker compose up -d so1
+```
 
-**Passed CentOS** ✔️ </br>
-CentOS Stream release 8</br>
-Podman Release v3.1.0</br>
+3. Watch startup:
 
-### Docker
-Docker may still be the desired method to run containers. If use of Docker natively is desired run the run-docker.sh script.
+```sh
+docker compose ps
+docker compose logs -f so1
+```
 
-**Passed CentOS** ✔️</br>
-CentOS Stream release 8</br>
-Docker version 20.10.3-ce</br>
-Docker-Compose version 1.28.2</br>
+4. Open `http://<host-ip>:8000` from your machine or another host on the same LAN and sign in as `admin` with the password from `.env`.
 
-**Passed Debian 9** ✔️</br>
-Docker version 18.06.0-ce</br>
-Docker-Compose 1.8.0</br>
+## What is exposed
+
+The compose file publishes Splunk on all host interfaces so other LAN clients can reach it:
+
+- `8000/tcp`: Splunk Web UI
+- `8088/tcp`: HTTP Event Collector
+- `8089/tcp`: management API
+- `9997/tcp`: forwarder / receiving port
+
+This repo no longer includes a bundled universal forwarder service. External forwarders or log shippers can still send data to the standalone instance over the published ingestion ports.
+
+## Environment file
+
+`.env` provides the local startup values consumed by `docker-compose.yml`:
+
+- `SPLUNK_PASSWORD`: admin password for the standalone instance.
+- `SPLUNK_GENERAL_TERMS`: required Splunk 10.x general terms acceptance flag.
+- `SPLUNK_LICENSE_URI`: defaults the container to `Free`, so no local `splunk.lic` file is required.
+
+`.env` is intentionally local-only and should never be committed.
+
+## Helper scripts
+
+- `./run-docker.sh` runs `docker compose up -d`.
+- `./run-podman.sh` runs `podman compose up -d`.
+
+## Fresh reset
+
+If you need a clean standalone instance with a new password or empty data, remove the old stack state first:
+
+```sh
+docker compose down -v --remove-orphans
+```
+
+That deletes local Splunk data for this repo.
