@@ -8,14 +8,14 @@ Minimal standalone-only Splunk Enterprise compose setup for local evaluation on 
 2. Start Splunk:
 
 ```sh
-docker compose up -d so1
+docker compose up -d splunk
 ```
 
 3. Watch startup:
 
 ```sh
 docker compose ps
-docker compose logs -f so1
+docker compose logs -f splunk
 ```
 
 4. Open `http://<host-ip>:8000` from your machine or another host on the same LAN and sign in as `admin` with the password from `.env`.
@@ -45,6 +45,17 @@ This repo no longer includes a bundled universal forwarder service. External for
 
 - `./run-docker.sh` runs `docker compose up -d`.
 - `./run-podman.sh` runs `podman compose up -d`.
+- `./install-bots.sh` downloads and installs the BOTS v3 dataset into the running Splunk container.
+
+## BOTS Dataset (Optional)
+
+To easily install the BOTS v3 dataset for testing:
+
+```sh
+./install-bots.sh
+```
+
+This will download the ~320MB `botsv3_data_set.tgz`, verify its MD5, extract it to `/opt/splunk/etc/apps`, and restart Splunk.
 
 ## Fresh reset
 

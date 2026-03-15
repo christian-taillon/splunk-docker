@@ -1,14 +1,14 @@
 volumes:
-  so1-var:
-  so1-etc:
-  so1-usr:
-  so1-sysloc:
+  splunk-var:
+  splunk-etc:
+  splunk-usr:
+  splunk-sysloc:
 
 services:
-  so1:
+  splunk:
     image: docker.io/splunk/splunk:10.2.1-rhel9
-    container_name: so1
-    hostname: so1
+    container_name: splunk
+    hostname: splunk
     restart: unless-stopped
     environment:
       SPLUNK_START_ARGS: --accept-license
@@ -21,7 +21,7 @@ services:
       - "0.0.0.0:8089:8089"
       - "0.0.0.0:9997:9997"
     volumes:
-      - so1-var:/opt/splunk/var
-      - so1-etc:/opt/splunk/etc
-      - so1-usr:/opt/splunk/etc/users
-      - so1-sysloc:/opt/splunk/etc/system/local
+      - splunk-var:/opt/splunk/var
+      - splunk-etc:/opt/splunk/etc
+      - splunk-usr:/opt/splunk/etc/users
+      - splunk-sysloc:/opt/splunk/etc/system/local

@@ -17,9 +17,9 @@ Refresh this repository to a fresh standalone-only Splunk deployment, validate i
   Validation: manual diff review against compose settings
   Evidence: Changed files: `.env`, `.gitignore`, `README.md`; generated a new 24-character mixed-complexity password in `.env`, added explicit `.env` ignore protection, and rewrote docs for standalone-only startup plus LAN-accessible ports and clean reset guidance.
 - [x] P3 Run a fresh standalone validation.
-  Acceptance: old stack state is removed as needed, `so1` starts cleanly, and evidence is captured from compose status, logs, and HTTP port 8000.
-  Validation: `docker compose down -v --remove-orphans`; `docker compose up -d so1`; `docker compose ps`; `docker compose logs --tail=50 so1`; `curl -I --max-time 15 http://127.0.0.1:8000`
-  Evidence: Reset prior state with `docker compose down -v --remove-orphans`, then started `so1` cleanly; readiness reached with a successful `curl -I` returning `HTTP/1.1 303 See Other` from `Server: Splunkd`; `docker compose ps` showed `so1` on `docker.io/splunk/splunk:10.2.1-rhel9` with published `0.0.0.0` ports and healthy status; startup logs showed `Activate free license`, a clean Ansible `PLAY RECAP`, and streaming handoff.
+  Acceptance: old stack state is removed as needed, `splunk` starts cleanly, and evidence is captured from compose status, logs, and HTTP port 8000.
+  Validation: `docker compose down -v --remove-orphans`; `docker compose up -d splunk`; `docker compose ps`; `docker compose logs --tail=50 splunk`; `curl -I --max-time 15 http://127.0.0.1:8000`
+  Evidence: Reset prior state with `docker compose down -v --remove-orphans`, then started `splunk` cleanly; readiness reached with a successful `curl -I` returning `HTTP/1.1 303 See Other` from `Server: Splunkd`; `docker compose ps` showed `splunk` on `docker.io/splunk/splunk:10.2.1-rhel9` with published `0.0.0.0` ports and healthy status; startup logs showed `Activate free license`, a clean Ansible `PLAY RECAP`, and streaming handoff.
 - [x] P4 Commit and push repo changes without `.env`.
   Acceptance: intended tracked files are committed with a clear message, `.env` is not staged, and the branch is pushed to its configured remote.
   Validation: `git status --short`; `git commit`; `git push`
