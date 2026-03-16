@@ -1,8 +1,6 @@
 volumes:
   splunk-var:
   splunk-etc:
-  splunk-usr:
-  splunk-sysloc:
 
 services:
   splunk:
@@ -16,12 +14,23 @@ services:
       SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
       SPLUNK_LICENSE_URI: ${SPLUNK_LICENSE_URI:-Free}
     ports:
-      - "0.0.0.0:8000:8000"
-      - "0.0.0.0:8088:8088"
-      - "0.0.0.0:8089:8089"
-      - "0.0.0.0:9997:9997"
+      - "0.0.0.0:8000:8000" # Splunk Web UI
+      - "0.0.0.0:8088:8088" # HTTP Event Collector (HEC)
+      - "0.0.0.0:8089:8089" # Management API
+      - "0.0.0.0:9997:9997" # Forwarder / Indexing Port
+    healthcheck:
+      test: ["CMD", "/sbin/check_status.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+      nproc:
+        soft: 65536
+        hard: 65536
     volumes:
       - splunk-var:/opt/splunk/var
       - splunk-etc:/opt/splunk/etc
-      - splunk-usr:/opt/splunk/etc/users
-      - splunk-sysloc:/opt/splunk/etc/system/local
