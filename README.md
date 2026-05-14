@@ -37,15 +37,35 @@ This repo no longer includes a bundled universal forwarder service. External for
 
 - `SPLUNK_PASSWORD`: admin password for the standalone instance.
 - `SPLUNK_GENERAL_TERMS`: required Splunk 10.x general terms acceptance flag.
-- `SPLUNK_LICENSE_URI`: defaults the container to `Free`, so no local `splunk.lic` file is required.
+- `SPLUNK_LICENSE_URI`: defaults the container to `Free`. To use an Enterprise license file instead, set this to `/run/splunk/licenses/<your-license-file>`.
 
 `.env` is intentionally local-only and should never be committed.
+
+## Enterprise license file (optional)
+
+The base compose setup still defaults to `Free`, so this does not affect other users unless they opt in.
+
+To use a local Splunk Enterprise license file:
+
+1. Put the file in `licenses/` (for example `licenses/Splunk.License`).
+2. Set `SPLUNK_LICENSE_URI=/run/splunk/licenses/Splunk.License` in your local `.env`.
+3. Restart the container:
+
+```sh
+docker compose up -d --force-recreate splunk
+```
+
+The compose file mounts `./licenses` into the container at `/run/splunk/licenses` as read-only, so users without a license file can keep using the default `Free` mode.
 
 ## Helper scripts
 
 - `./run-docker.sh` runs `docker compose up -d`.
 - `./run-podman.sh` runs `podman compose up -d`.
 - `./install-bots.sh` downloads and installs the BOTS v3 dataset into the running Splunk container.
+- `./install-app.sh` installs a local Splunk app (`.spl` or `.tar.gz`) into the running container with persistence.
+  ```bash
+  ./install-app.sh /path/to/your/app.spl
+  ```
 
 ## BOTS Dataset (Optional)
 

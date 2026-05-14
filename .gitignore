@@ -1,3 +1,5 @@
 .env
 *.env
 Splunk.License
+licenses/*
+!licenses/.gitkeep

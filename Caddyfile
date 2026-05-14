@@ -1,0 +1,15 @@
+:8090 {
+	reverse_proxy https://splunk:8089 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
+}
+
+:8050 {
+	reverse_proxy https://splunk:8000 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
+}

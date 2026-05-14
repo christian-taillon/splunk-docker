@@ -19,11 +19,11 @@ services:
       - "0.0.0.0:8089:8089" # Management API
       - "0.0.0.0:9997:9997" # Forwarder / Indexing Port
     healthcheck:
-      test: ["CMD", "/sbin/check_status.sh"]
+      test: ["CMD", "curl", "-k", "https://localhost:8089/services/server/info"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 60s
+      start_period: 30s
     ulimits:
       nofile:
         soft: 65536
@@ -32,5 +32,19 @@ services:
         soft: 65536
         hard: 65536
     volumes:
-      - splunk-var:/opt/splunk/var
-      - splunk-etc:/opt/splunk/etc
+      - ./licenses:/run/splunk/licenses:ro,Z
+      - splunk-var:/opt/splunk/var:Z
+      - splunk-etc:/opt/splunk/etc:Z
+
+  caddy:
+    image: docker.io/library/caddy:2-alpine
+    container_name: caddy-splunk-proxy
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:8090:8090"
+      - "0.0.0.0:8050:8050"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro,Z
+    depends_on:
+      splunk:
+        condition: service_healthy
