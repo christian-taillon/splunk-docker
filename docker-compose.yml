@@ -33,8 +33,8 @@ services:
         hard: 65536
     volumes:
       - ./licenses:/run/splunk/licenses:ro,Z
-      - splunk-var:/opt/splunk/var:Z
-      - splunk-etc:/opt/splunk/etc:Z
+      - splunk-var:/opt/splunk/var:z
+      - splunk-etc:/opt/splunk/etc:z
 
   caddy:
     image: docker.io/library/caddy:2-alpine
